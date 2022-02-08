@@ -132,5 +132,32 @@ List<EmpGrade> getEmpGrade();
 		            	select empno
 		            	from emp
 		            	where ename=#{ename} )
-  </select>    	            	  
+  </select>    	    
+  <!-- 
+   -->
+  	<select id="getSchEmp" resultType="emp">
+	  	select *
+	  	from emp
+	  	where mgr = #{mgr}
+	  	and deptno= #{deptno}
+  	</select>	  
+ 	<insert id="insertEmp" parameterType="emp">
+ 		INSERT INTO EMP02 values(EMP_SEQ.NEXTVAL,#{ename},#{job},
+ 			#{mgr},to_date(#{hiredateS},'YYYY-MM-DD'),#{sal},#{comm},#{deptno})
+ 	</insert>  
 </mapper>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
