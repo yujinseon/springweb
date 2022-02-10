@@ -50,6 +50,11 @@
 		
 		--%>	
 	});
+	function goDetail(empno){
+		// get방식으로 상세화면 이동..
+		location.href="${path}/emp.do?empno="+empno;	
+	}
+	
 </script>
 </head>
 
@@ -87,7 +92,7 @@
     </thead>	
     <tbody>
     	<c:forEach var="emp" items="${emplist}">
-    	<tr><td>${emp.empno}</td><td>${emp.ename}</td><td>${emp.job}</td>
+    	<tr ondblclick="goDetail(${emp.empno})"><td>${emp.empno}</td><td>${emp.ename}</td><td>${emp.job}</td>
     	<td><fmt:formatNumber value="${emp.sal}"/></td><td>${emp.deptno}</td></tr>
     	</c:forEach>
     </tbody>
@@ -143,10 +148,5 @@
     </div>
   </div>
 </div>
-<!-- 
-ex) 부서조회 화면에서, 부서정보 등록 화면 및 controller 단 처리를 해주세요.
-	2/3조 제출해주세요.
-
- -->
 </body>
 </html>

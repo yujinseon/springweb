@@ -19,7 +19,9 @@ public class A02_DeptService {
 		if(sch.getLoc()==null) sch.setLoc("");
 		return dao.getDeptList(sch);
 	}
-	public void insertDept(Dept ins) {
-		dao.insertDept(ins);
+	
+	public void insertDept(Dept sch) {
+		dao.insertDept(sch);
 	}
+
 }
