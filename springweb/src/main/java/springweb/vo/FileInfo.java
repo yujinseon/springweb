@@ -9,7 +9,14 @@ public class FileInfo {
 	private Date regdte;
 	private Date uptdte;
 	private String etc;
-	public FileInfo(String upload, String fname, String etc) {
+	public FileInfo(String pathinfo, String fname, String etc) {
+		super();
+		this.pathinfo = pathinfo;
+		this.fname = fname;
+		this.etc = etc;
+	}
+	public FileInfo() {
+		super();
 		// TODO Auto-generated constructor stub
 	}
 	public int getFno() {
