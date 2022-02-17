@@ -1,0 +1,90 @@
+2022-02-15
+[1단계:개념] 1. vue에서 이벤트 처리구조를 기술해보자.
+methods:{함수명:function(){ 으로 시작하여 
+이벤트 핸들러 함수로 이용
+다른 함수나 모델데이터를 this.모델명 변경을 통해 데이터 처
+ajax를 통해서 비동기적으로 서버에 데이터 접근
+접근한 데이터를 모델값으로 할당
+화면에 v-for구문으로 처리된 내용 출력
+
+[1단계:확인] 2. 이벤트 핸들러 함수를 기술하고, 버튼을 클릭시, 좋아요 수가 올라가게 해보자.
+{{msg}}:<input v-model="like"/>
+<button @click="like+=1"좋아요 클릭</button>
+<p>{{like}}</p>
+var vm = new Vue({
+		el:"#show",
+		data:{msg:"좋아요",like:0}
+		
+[1단계:개념] 3. vue를 활용하여 ajax를 처리하기 위한 기본 환경을 기술하세요
+ajax를 진행할 폼(페이지)와 VO(DTO) / Dao / Service / mapper / Controller 작업을 통해
+ajax를 사용할 환경 (data / url / datatype 등)을 만들어 나야 한다 
+
+[1단계:개념] 4. vue로 서버에 조회리스트 처리하는 화면을 구성할려고 한다. 처리 순서를 기술하세요.
+1. sql 작성
+2. Vo 
+3. dao 
+4. mapper 
+5. service
+6. controller
+7. html/jsp에 form 준비
+8. 스크립트 ajax
+
+[1단계:확인] 5. vue로 사원번호를 통해 사원정보 상세화면을 처리하는 화면을 구현해보자.
+ select *
+from emp02
+where ename like '%'||#{ename}||'%';
+ / Emp vo / dao public ArrayList<Emp> getEmpList(Emp sch) 
+ / service public ArrayList<Emp> getEmpList(Emp sch) {
+		if (sch.getEname() == null)
+			sch.setEname("");
+ /ajax controller
+ @GetMapping("/empAjax01.do")
+	public String empAjax(Emp sch, Model d) {
+		d.addAttribute("empList", service.getEmpList(sch));
+		return "pageJsonReport"; 
+	}
+ /html
+ <form id="frm01" class="form-inline"  method="post">
+  	<nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+	    <input class="form-control mr-sm-2" v-model="sch.ename" placeholder="사원명" @keyup="search" />
+ 	</nav>
+</form>
+	
+<table class="table table-hover table-striped">
+   	<col width="20%">
+   	<col width="20%">
+   	<col width="20%">
+   	<col width="20%">
+   	<col width="20%">
+    <thead>
+      <tr class="table-success text-center">
+        <th>사원번호</th>
+        <th>사원명</th>
+        <th>직책명</th>
+        <th>급여</th>
+        <th>부서번호</th>
+      </tr>
+    </thead>	
+    <tbody>
+    	<tr v-for="(emp, idx) in empList"><td>{{emp.empno}}</td><td>{{emp.ename}}</td>
+    		<td>{{emp.job}}</td><td>{{emp.sal}}</td><td>{{emp.deptno}}</td></tr>
+    </tbody>
+	</table>  
+var vm = new Vue({
+		el:".container",
+		data:{title:"사원정보 뷰로 조회",sch:{ename:""},empList:[]},
+		methods:{
+			search:function(){
+				if(event.keyCode==13){
+					var vm = this;
+					$.ajax({
+						url:"/springweb/empAjax01.do",
+						data:vm.sch,
+						dataType:"json",
+						success:function(data){
+							vm.empList = data.empList;
+						},
+						error:function(err){
+							console.log(err)	
+						}
+					});

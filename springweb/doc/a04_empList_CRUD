@@ -37,7 +37,7 @@
 		- 등록 요청 처리 컨트롤러(A01_EmpController.java)
 			@RequestMapping("/insertEmp.do")
 			public String inserEmp(Emp ins, Model d){
-				d.add("proc","등록완료");
+				d.addAttribute("proc","등록완료");
 				// service
 				return "WEB-INF\views\a02_mvc\a01_empList.jsp"; // 등록 후, 처리해야 할 화면 호출..
 			}	
@@ -176,8 +176,139 @@
 			5) service, controller 호출						
 	
 	2) 수정
-	
+		- 프로세스
+		수정 클릭시 수정 관련 controller 요청 및 요청값 전달
+		요청 전달된 VO를 기준으로 데이터베이스 수정 처리
+		수정 후, 다음 화면에서 수정된 데이터 로딩 및 수정 완료 표현
+		- 개발 순서
+			컨트롤러 처리 controller(A01_EmpController.java)
+				@RequestMapping("/uptEmp.do")
+				public String uptEmp(Emp upt, Model d){
+					d.addAttribute("proc","수정완료");
+					return "WEB-INF\views\a02_mvc\a10_deptList.jsp"
+				}
+			뷰처리 view(WEB-INF\views\a02_mvc\a01_empList.jsp)
+				var proc="${proc}";
+				if(proc!=""){
+					alert(proc);
+				}	
+				$("#uptBtn").click(function(){
+					if(confirm("수정하시겠습니까?")){
+						$("form").attr("action","${path}/uptEmp.do");
+						$("form").submit();
+					}
+				}); 
+			----------------------------------------------------	
+			데이터베이스 처리.	A01_EmpDao.java, EmpMapper.xml
+				sql 작성  
+					update emp02
+						set ename = '',
+							job = '',
+							mgr = 22,
+							hiredate = to_date('','YYYY-MM-DD'),
+							sal = 1000,
+							comm = 100,
+							deptno = 10
+					where empno = @@;
+				vo 확인
+				dao 처리 A01_EmpDao.java
+					public void uptEmp(Emp upt);
+				mapper
+					<update id = "uptEmp" parameterType="emp">
+						update emp02
+							set ename = #{ename},
+								job = #{job},
+								mgr = #{mgr},
+								hiredate = to_date(#{hiredateS},'YYYY-MM-DD'),
+								sal = #{sal},
+								comm = #{comm},
+								deptno = #{deptno}
+						where empno = #{empno}					
+				service ==> controller 호출
+				controller
+					service.uptEmp(upt);
+			ex) 부서상세화면에서 수정 버튼 클릭시, 컨트롤러 호출하고, 수정되었다고
+				표시하세요 - 5조 제출해주세요.
+				controller(A02_DeptController.java) 부서수정 선언
+					@RequestMapping("/uptDept.do")
+					public String uptDept(Dept upt, Model d){
+						d.addAttribute("proc","부서수정완료");
+						
+						return "WEB-INF\views\a02_mvc\a10_deptList.jsp";
+					}
+				view (a10_deptList.jsp)
+					var proc="${proc}";
+					if(proc!=""){
+						alert(proc);
+					}
+					$("#uptBtn").click(function(){
+						if(confirm("수정하시겠습니까?")){
+						    $("#frm02").attr("action","${path}/uptDept.do");
+							$("#frm02").submit();
+						}
+					});
+			ex) 부서 정보 수정 Dao 처리 
+				6조 제출
+					sql 작성 :
+						update dept02
+							set dname = '',
+							    loc = ''
+						where deptno = 10;
+					vo 확인		    	
+					dao 작성
+						public void uptDept(Dept upt);
+					mapper 작성
+						<update id="uptDept" parameterType="dept">
+							update dept02
+								set dname = #{dname},
+								    loc = #{loc}
+							where deptno = #{deptno}						
+						</update>
+					service ==> controller
+					controller단 처리..@RequestMapping("/uptDept.do")
+						service.uptDept(upt);
+				
+				
 	3) 삭제				
-							 	
+		프로세스
+			삭제버튼 클릭
+			삭제 controller단에 요청값을 empno를 전송
+			삭제 처리 후, 화면리스트로 전송
+		개발순서
+			삭제 controller선언
+				@RequestMapping("delEmp.do")
+				public String delEmp(@RequestParam("empno") int empno, Model d){
+					d.addAttribute("proc","삭제되었습니다");
+				}
+			
+			삭제 클릭시 controller로 호출(jsp)
+				$("#delBtn").click(function(){
+					if(confirm("삭제하시겠습니까?")){
+						location.href="${path}/delEmp.do?empno="+$("[name=empno]").val();
+					}
+				});
+			삭제 후, 조회리스트로 이동 처리..
+				var proc = "${proc}";
+				if(proc=="삭제되었습니다"){
+					alert(proc);
+					location.href="${path}/empList.do";
+				}
+			========
+			sql : delete from emp02 where empno=@@	
+			dao/mapper
+				public void delEmp(int empno);
+				<delete id="delEmp" parameterType="int">
+					delete from emp02 where empno=#{empno} 
+			service /controller 호출
+			controller
+				service.delEmp(empno);
+				
+			ex)	2/3조 제출, 손들기	
+				
+			
+				
+			
+			
+								 	
 			
 			
