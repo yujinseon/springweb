@@ -60,7 +60,8 @@
                        		{cls04:false,cls05:true,cls06:true},
                         	{cls04:true,cls05:true,cls06:true}];
                this.clsAdd02 = style[idx3++%3];
-            }
+            },
+           
          }
       });   
    });
@@ -82,6 +83,17 @@
      <h3 :style="style01">{{msg}}(모델적용2)</h3>
      <h3 :class="clsAdd02" @click="ch03">{{msg}}</h3>
    </div>
+   
+   <select v-model="ch01">
+   		<option>빨</option>
+   		<option>주</option>
+   		<option>노</option>
+   		<option>초</option>
+   		<option>파</option>
+   		<option>남</option>
+   		<option>보</option>
+   </select>
+   <h2 >색변화확인</h2>
    <form id="frm01" class="form-inline"  method="post">
      <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
        <input class="form-control mr-sm-2" placeholder="제목" />
