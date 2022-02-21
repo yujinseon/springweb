@@ -27,7 +27,27 @@ MultipartFile을 Vo에 선언후 서비스단에서 file로 전환하여 dao.ins
 	3) service 안에 여러 개 파일이 등록 반복 
 [1단계:확인] 4. textarea를 만들고, 입력되는 글자와 한계를 @@/@@로 선언하고, 해당 글자 수가 
                초과할 때, 배경색상을 변경되게 처리하세요.(지난시간 - computed, 클래스선언 활용)
+$(document).ready(function(){
+		var vm = new Vue({
+			el:".container",
+			data:{txarea:""},
+			computed:{
+				chText:function(){
+					var len = this.txarea.length;
+					var isNonValid=true;
+					if(len>=8 && len<=16){
+						isNonValid=false;
+					}
+					return {ckTextVaild:isNonValid};
+				}
+			}
+		});	
 
+	});
+<style>
+	.ckTextVaild{background:blue;color:yellow;}
+</style>
+<textarea rows="20" cols="5" v-model="txarea":class="chText" ></textarea>
 
 ~ 9:30까지 제출하세요.
 
