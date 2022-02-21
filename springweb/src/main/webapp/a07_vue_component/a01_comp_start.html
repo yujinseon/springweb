@@ -35,7 +35,10 @@
 		Vue.component("hello-comp",{
 			template:"<div>안녕하세요 컴포넌트 1단계 내용입니다 ^^</div>"
 		});		
-		// ex1) greet-comp로  <div>하위에 h2와 p로 인사말을 문자으로 해서 하단에서 호출하세요.. 
+		// ex1) greet-comp로  <div>하위에 h2와 p로 인사말을 문자로 해서 하단에서 호출하세요..
+		Vue.component("greet-com",{
+			template:"<div><h2>안녕하세요</h2><p>컴포넌트 1단계 예제!!</p></div>"
+		});
 		var vm = new Vue({
 			el:".container",
 			data:{msg:"컴포넌트 시작!"}
@@ -52,7 +55,9 @@
 	  <h2 >{{msg}}</h2>
 	  <hello-comp></hello-comp>
 	  <hello-comp></hello-comp>
-	  <hello-comp></hello-comp>
+	  <greet-com></greet-com>
+	  <greet-com></greet-com>
+	  <greet-com></greet-com>
 	</div>
 	<form id="frm01" class="form-inline"  method="post">
   	<nav class="navbar navbar-expand-sm bg-dark navbar-dark">

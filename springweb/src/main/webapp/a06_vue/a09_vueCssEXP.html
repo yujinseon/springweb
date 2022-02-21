@@ -40,7 +40,7 @@
 	$(document).ready(function(){
 		var vm = new Vue({
 			el:".container",
-			data:{msg:"동적 style 예제", score:0, id:"",ckMsg:"유효하지 않습니다"},
+			data:{msg:"동적 style 예제", score:0, id:"",ckMsg:"유효하지 않습니다",txarea:""},
 			computed:{
 				info:function(){
 					// 모델 score에 따라서 {warning:true}를 다르게 처리..
@@ -73,6 +73,14 @@
 						this.ckMsg="등록가능합니다.";
 					}
 					return {ckInvalid:isNonValid};
+				},
+				chText:function(){
+					var len = this.txarea.length;
+					var isNonValid=true;
+					if(len>=8 && len<=16){
+						isNonValid=false;
+					}
+					return {ckTextVaild:isNonValid};
 				}
 			}
 		});	
@@ -84,6 +92,7 @@
 	.warning{background-color:orange;color:purple;}
 	.warnimage{width:18px;height:18px;top:5px;position:relative}
 	.ckInvalid{background:red;color:yellow;}
+	.ckTextVaild{background:blue;color:yellow;}
 </style>
 </head>
 <body>
@@ -111,7 +120,7 @@
 	  아이디(2단계):<input type='text' v-model="id" :class="chkId1"/><br>
 	  아이디(3단계):<input type='text' v-model="id" :class="chkId2"/><span>{{ckMsg}}</span><br> 
 	  
-	  
+	  <textarea rows="10" cols="10" v-model="txarea":class="chText" ></textarea>
 	  
 	</div>
 	<form id="frm01" class="form-inline"  method="post">
